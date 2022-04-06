@@ -1,7 +1,7 @@
 <h1>TODO App</h1>
 <h3> UI Design Completed</h3>
 <h5><i>Home Page</i></h5>
-<img src="UI_design.png" alt="homepage_image">
+<img src="UI_design" alt="homepage_image">
 <h3>Sample Design</h3><br><br>
 <h5><i>Home Page</i></h5>
 <img src="homepage.jpg" alt="homepage_image">
