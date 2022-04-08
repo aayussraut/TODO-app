@@ -14,6 +14,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "TODO",
+      theme: ThemeData().copyWith(
+          bottomSheetTheme:
+              const BottomSheetThemeData(backgroundColor: Colors.transparent),
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: Colors.white,
+                displayColor: Colors.white,
+              ),
+          cardColor: const Color.fromARGB(255, 25, 54, 140),
+          colorScheme: ThemeData().colorScheme.copyWith(
+                primary: const Color(0xff031956),
+                secondary: const Color(0xff344FA1),
+              )),
       home: MyHomePage(),
     );
   }
@@ -26,13 +38,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Todo> todoList = [
-    Todo(id: "1", title: "Gym", description: "Go to Gym EveryDay"),
     Todo(
-        id: "2", title: "Coding", description: "1-2 Hours HackerRank EveryDay"),
+        id: "1",
+        title: "Gym",
+        description: "Go to Gym EveryDay",
+        isChecked: false),
+    Todo(
+        id: "2",
+        title: "Coding",
+        description: "1-2 Hours HackerRank EveryDay",
+        isChecked: false),
   ];
 
-  void addTodo(String id, String title, String description) {
-    final newTodo = Todo(id: id, title: title, description: description);
+  void addTodo(String id, String title, String description, bool isChecked) {
+    final newTodo = Todo(
+        id: id, title: title, description: description, isChecked: isChecked);
 
     setState(
       () {
@@ -43,11 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _startAddTodo(BuildContext context) {
     showModalBottomSheet(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(25.0),
-        ),
-      ),
+      backgroundColor: Colors.white,
       isScrollControlled: true,
       context: context,
       builder: (context) {
@@ -59,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff031956),
       appBar: AppBar(centerTitle: true, title: const Text("TODO"), actions: [
         IconButton(
           onPressed: () => _startAddTodo(context),

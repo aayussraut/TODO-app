@@ -17,8 +17,9 @@ class _NewTodoState extends State<NewTodo> {
     String title = _titleController.text;
     String description = _descriptionController.text;
     String id = DateTime.now().toString();
+    bool isChecked = false;
 
-    widget.addTodo(id, title, description);
+    widget.addTodo(id, title, description, isChecked);
     Navigator.of(context).pop();
   }
 
@@ -28,6 +29,7 @@ class _NewTodoState extends State<NewTodo> {
       child: Card(
         elevation: 5,
         child: Container(
+          color: Colors.white,
           padding: MediaQuery.of(context).viewInsets,
           // padding: const EdgeInsets.only(
           //   top: 10,
@@ -35,33 +37,42 @@ class _NewTodoState extends State<NewTodo> {
           //   left: 10,
           //   bottom:
           // ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextField(
-                controller: _titleController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: "Title",
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                TextField(
+                  style: const TextStyle(
+                    color: Color(0xff031956),
+                  ),
+                  controller: _titleController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: "Create a task.",
+                  ),
+                  onSubmitted: (_) => submitData(),
                 ),
-                onSubmitted: (_) => submitData(),
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              TextField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(hintText: "Description"),
-                onSubmitted: (_) => submitData(),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              TextButton(
-                onPressed: submitData,
-                child: const Text("submit"),
-              ),
-            ],
+                const SizedBox(
+                  height: 3,
+                ),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(hintText: "Description"),
+                  onSubmitted: (_) => submitData(),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                ElevatedButton(
+                  onPressed: submitData,
+                  child: const Text(
+                    "Add Task  ^",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
