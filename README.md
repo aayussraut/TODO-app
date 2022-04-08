@@ -1,7 +1,7 @@
 <h1>TODO App</h1>
 <h3>Day-1 UI Design Completed</h3>
 <h5><i>Home Page</i></h5>
-<img src="UI_design" alt="homepage_image">
+<img src="UI_design height=400px" alt="homepage_image">
 <h3>Day-2 User Can Add Data</h3>
 <h5><i>Modal Bottom Sheet</i></h5>
 <img src="AddingTodo.png" alt="adding_todo">
