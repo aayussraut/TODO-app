@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:todo/models/todo.dart';
+import 'package:hive/hive.dart';
 
 class TodoList extends StatefulWidget {
-  final List<Todo> _todoList;
-  TodoList(this._todoList);
-
   @override
   State<TodoList> createState() => _TodoListState();
 }
 
 class _TodoListState extends State<TodoList> {
+  final todoBox = Hive.box('todos');
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
         itemBuilder: (context, index) {
+          final task = todoBox.get(index);
           return Card(
             // color: ThemeData().copyWith().,
             margin: const EdgeInsets.all(8),
@@ -26,14 +25,13 @@ class _TodoListState extends State<TodoList> {
               //   Icons.calendar_month,
               //   color: Colors.white,
               // ),
-              value: widget._todoList[index].isChecked,
+              value: task.isChecked,
               controlAffinity: ListTileControlAffinity.leading,
               title: Text(
-                widget._todoList[index].title,
+                task.title,
                 style: TextStyle(
-                  decoration: widget._todoList[index].isChecked
-                      ? TextDecoration.lineThrough
-                      : null,
+                  decoration:
+                      task.isChecked ? TextDecoration.lineThrough : null,
                 ),
               ),
               secondary: const IconButton(
@@ -43,10 +41,10 @@ class _TodoListState extends State<TodoList> {
                 ),
                 onPressed: null,
               ),
-              subtitle: Text(widget._todoList[index].description),
+
               onChanged: (bool? value) {
                 setState(() {
-                  widget._todoList[index].isChecked = value!;
+                  task.isChecked = value!;
                 });
               },
               // trailing: IconButton(
@@ -59,7 +57,7 @@ class _TodoListState extends State<TodoList> {
             ),
           );
         },
-        itemCount: widget._todoList.length,
+        itemCount: todoBox.length,
       ),
     );
   }

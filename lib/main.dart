@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'models/todo.dart';
-import 'widgets/displaying_todo.dart';
-import "widgets/new_todo.dart";
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'todo_home_page.dart';
+import './models/todo.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TodoAdapter());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -26,68 +29,26 @@ class MyApp extends StatelessWidget {
                 primary: const Color(0xff031956),
                 secondary: const Color(0xff344FA1),
               )),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final List<Todo> todoList = [
-    Todo(
-        id: "1",
-        title: "Gym",
-        description: "Go to Gym EveryDay",
-        isChecked: false),
-    Todo(
-        id: "2",
-        title: "Coding",
-        description: "1-2 Hours HackerRank EveryDay",
-        isChecked: false),
-  ];
-
-  void addTodo(String id, String title, String description, bool isChecked) {
-    final newTodo = Todo(
-        id: id, title: title, description: description, isChecked: isChecked);
-
-    setState(
-      () {
-        todoList.add(newTodo);
-      },
-    );
-  }
-
-  void _startAddTodo(BuildContext context) {
-    showModalBottomSheet(
-      backgroundColor: Colors.white,
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return NewTodo(addTodo);
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xff031956),
-      appBar: AppBar(centerTitle: true, title: const Text("TODO"), actions: [
-        IconButton(
-          onPressed: () => _startAddTodo(context),
-          icon: const Icon(Icons.add),
-        )
-      ]),
-      body: TodoList(todoList),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _startAddTodo(context),
-        child: const Icon(Icons.add),
+      //   home: TodoHomePage(),
+      // );
+      home: FutureBuilder(
+        future: Hive.openBox('todos'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            } else {
+              return const TodoHomePage();
+            }
+          } else {
+            return const Scaffold();
+          }
+        },
       ),
     );
+  }
+
+  void dispose() {
+    Hive.close();
   }
 }

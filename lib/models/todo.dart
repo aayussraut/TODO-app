@@ -1,13 +1,16 @@
+import 'package:hive/hive.dart';
+
+part 'todo.g.dart';
+
+@HiveType(typeId: 0)
 class Todo {
-  String id;
+  @HiveField(0)
   String title;
-  String description;
+  @HiveField(1)
   bool isChecked;
 
   Todo({
-    required this.id,
     required this.title,
-    required this.description,
     required this.isChecked,
   });
 }

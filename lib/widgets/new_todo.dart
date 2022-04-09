@@ -11,15 +11,11 @@ class NewTodo extends StatefulWidget {
 
 class _NewTodoState extends State<NewTodo> {
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
 
   void submitData() {
     String title = _titleController.text;
-    String description = _descriptionController.text;
-    String id = DateTime.now().toString();
     bool isChecked = false;
-
-    widget.addTodo(id, title, description, isChecked);
+    widget.addTodo(title, isChecked);
     Navigator.of(context).pop();
   }
 
@@ -55,11 +51,6 @@ class _NewTodoState extends State<NewTodo> {
                 ),
                 const SizedBox(
                   height: 3,
-                ),
-                TextField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(hintText: "Description"),
-                  onSubmitted: (_) => submitData(),
                 ),
                 const SizedBox(
                   height: 5,
