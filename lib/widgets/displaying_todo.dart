@@ -8,12 +8,14 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
   final todoBox = Hive.box('todos');
+
+  void deleteTask(int index) {}
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-        itemBuilder: (context, index) {
-          final task = todoBox.get(index);
+        itemBuilder: (context, int index) {
+          final task = todoBox.getAt(index);
           return Card(
             // color: ThemeData().copyWith().,
             margin: const EdgeInsets.all(8),
@@ -34,12 +36,16 @@ class _TodoListState extends State<TodoList> {
                       task.isChecked ? TextDecoration.lineThrough : null,
                 ),
               ),
-              secondary: const IconButton(
-                icon: Icon(
+              secondary: IconButton(
+                icon: const Icon(
                   Icons.delete,
                   color: Colors.red,
                 ),
-                onPressed: null,
+                onPressed: () {
+                  setState(() {
+                    todoBox.deleteAt(index);
+                  });
+                },
               ),
 
               onChanged: (bool? value) {
